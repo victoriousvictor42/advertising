@@ -1,0 +1,157 @@
+#### defining the question
+# identifying the individuals who are most likely going to click on the Kenyan entrepreneur's ads
+
+####metric for success
+# visualisations
+
+#### context
+# a Kenyan entreneur has started an online cryptography course and would want to advertise it on her blog. she targets audiences from various countries.
+
+#### experimental design 
+# data wrangling
+# feature engineering
+# data visualisation
+
+#### appropriateness of the data
+# the Kenyan Entrepreneur has already collected the data that will enable me to work on. 
+
+#### loading the dataset
+advertising <- read.csv("C:/Users/I/Downloads/advertising.csv")
+
+
+## checking the dataset
+# previwing the top of the dataset
+head(advertising)
+
+#previewing the bottom of the dataset
+tail(advertising)
+
+# checking the columns of the dataset
+colnames(advertising)
+
+# checking the rows of the dataset
+rownames(advertising)
+
+# checking for the data types in the dataset
+dim(advertising) #there are 1000 rows and 10 columns
+
+
+
+#### tidying the dataset
+#checking for missing data
+colSums(is.na(advertising)) # there are no missing data in the dataset
+
+#checking for duplicates
+duplicated(advertising)
+
+#showing whether there are repeat entries
+advertising[duplicated(advertising), ] #there are no duplicated data in the dataset
+
+## checking for outliers
+# in Daily.Time.Spent.on.Site
+boxplot(advertising$Daily.Time.Spent.on.Site) #there are no outliers in the time spent on site columns
+
+#in Age  
+boxplot(advertising$Age) #there are no outliers in the Age column
+
+#in Area.Income
+boxplot(advertising$Area.Income) # there are outliers that are less than 20,000
+
+#in Daily.Internet.Usage 
+boxplot(advertising$Daily.Internet.Usage )#there are no outliers in the column
+
+#Male
+boxplot(advertising$Male)#there are no outliers in the column
+
+#Clicked.on.Ad
+boxplot(advertising$Clicked.on.Ad) #there are no clicks on ad
+
+####feature engineering
+# making the column names uniform
+names(advertising)[names(advertising)=="Daily.Time.Spent.on.Site"] <- "daily_time_spent_on_site"
+names(advertising)[names(advertising)=="Age"] <- "age"
+names(advertising)[names(advertising)=="Area.Income"] <- "area_income"
+names(advertising)[names(advertising)=="Daily.Internet.Usage"] <- "daily_internet_usage"
+names(advertising)[names(advertising)=="Ad.Topic.Line"] <- "ad_topic_line"
+names(advertising)[names(advertising)=="City"] <- "city"
+names(advertising)[names(advertising)=="Male"] <- "sex" #changing the male name to sex because is representing males and female
+names(advertising)[names(advertising)=="Country"] <- "country"
+names(advertising)[names(advertising)=="Timestamp"] <- "timestamp"
+names(advertising)[names(advertising)=="Clicked.on.Ad"] <- "clicked_on_ad"
+
+colnames(advertising) #verifying that the suggested changes has taken place
+
+## removing the ad_topic_line column because i do not see its relevancy
+advertising$ad_topic_line <- NULL
+
+colnames(advertising)# we have now verified that the ad topic line has been removed from the dataset
+
+###univariate data analysis
+
+# Daily time spent on site
+x = hist(advertising$daily_time_spent_on_site,
+         main = "Daily time Spent on Site",
+         xlab = "Daily time Spent on Site",
+         col ='green') 
+  #the data is skewed to the left and most of the data is distributed between 65 and 85       
+
+# Age
+x = hist(advertising$age,
+         main = "Age",
+         xlab = "Age",
+         col ='green')
+  #data is skewed to the right and most of the data is distributed between 25 and 40
+  
+# area_income
+x = hist(advertising$area_income,
+         main = "area income",
+         xlab = "area income",
+         col ='green')
+  #data is skewed to the left and most of the data is distributed between 50,000 and 70,000
+  
+# daily_internet_usage
+
+x = hist(advertising$daily_internet_usage,
+         main = "daily internet usage",
+         xlab = "daily internet usage",
+         col ='green')
+   #data is used a lot and most of it is distributed between 200 and 225
+   
+# city
+
+# sex
+table(advertising$sex) # there are 519 males and 481 females
+
+barplot(table(advertising$sex),
+    main="sex")
+# country
+table(advertising$country)
+sample <- head(table(advertising$country))
+barplot(sample, main="Country")
+  #we see that afghanistan has the most appearance.
+# clicked_on_ad
+
+pie(table(advertising$clicked_on_ad)) #there are 500 no clicks and 500 click on ads
+
+
+#### Bivariate Analysis
+
+# we are going to perform label encoding on features with categorical data.
+
+# importing the ggplot library
+library(ggplot2)
+
+# sex vs clicked on ad 
+j = ggplot(data = advertising, aes(x = sex, fill = clicked_on_ad))+
+geom_bar(width = 0.5)
+j
+
+# area_income vs clicked on ad
+k = ggplot(data = advertising, aes(x = area_income, fill = clicked_on_ad))+ 
+geom_histogram(bins = 25)
+k
+
+# daily_internet_usage vs clicked on ad
+k = ggplot(data = advertising, aes(x = area_income, fill = clicked_on_ad))+ 
+geom_histogram(bins = 25)
+k
