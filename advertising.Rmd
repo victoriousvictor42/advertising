@@ -138,20 +138,46 @@ pie(table(advertising$clicked_on_ad)) #there are 500 no clicks and 500 click on 
 
 # we are going to perform label encoding on features with categorical data.
 
-# importing the ggplot library
+# Converting variables into string
+a = c('city', 'country')
+for (i in a) {
+  advertising[,i] = as.character(advertising[,i])
+}
+
+# Converting variables into factors.
+b = c('sex', 'clicked_on_ad')
+for (i in b) {
+advertising[,i] = as.factor(advertising[,i])
+}
+
+#importing the ggplot library
 library(ggplot2)
 
 # sex vs clicked on ad 
-j = ggplot(data = advertising, aes(x = sex, fill = clicked_on_ad))+
+sex_vs_ad = ggplot(data = advertising, aes(x = sex, fill = clicked_on_ad))+
 geom_bar(width = 0.5)
-j
+sex_vs_ad
 
 # area_income vs clicked on ad
-k = ggplot(data = advertising, aes(x = area_income, fill = clicked_on_ad))+ 
+area_vs_ad = ggplot(data = advertising, aes(x = area_income, fill = clicked_on_ad))+ 
 geom_histogram(bins = 25)
-k
+area_vs_ad
+ # many people who had an income between 50,000 and 70,000 did not click on the ad compared to those who did
+
 
 # daily_internet_usage vs clicked on ad
-k = ggplot(data = advertising, aes(x = area_income, fill = clicked_on_ad))+ 
+daily_vs_ad = ggplot(data = advertising, aes(x = daily_internet_usage, fill = clicked_on_ad))+ 
 geom_histogram(bins = 25)
-k
+daily_vs_ad
+ # between 100 and 150 there are more people who clicked the ad than those who did not.
+
+# age vs clicked on ad
+age_vs_ad = ggplot(data = advertising, aes(x = age, fill = clicked_on_ad))+ 
+geom_histogram(bins = 25)
+age_vs_ad
+ #generally many people do not click ads
+ 
+#### recommendation
+# The entrepreneur should focus on people with an income between 10,000 and 50,000
+# the entrepreneur should focus on people with the age between 45 and 60
+# The entrepreneur should focus on people with a daily internet usage between 100 and 175
